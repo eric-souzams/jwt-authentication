@@ -5,40 +5,58 @@ import io.security.userservicejwt.domain.User;
 import io.security.userservicejwt.repository.RoleRepository;
 import io.security.userservicejwt.repository.UserRepository;
 import io.security.userservicejwt.service.UserService;
-import lombok.AllArgsConstructor;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-@AllArgsConstructor
-@Service
+@RequiredArgsConstructor
+@Service @Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    @Override
+    @Override @Transactional
     public User saveUser(User user) {
-        return null;
+        log.info("Saving new user {} to the database", user.getName());
+        return userRepository.save(user);
     }
 
-    @Override
+    @Override @Transactional
     public Role saveRole(Role role) {
-        return null;
+        log.info("Saving new role {} to the database", role.getName());
+        return roleRepository.save(role);
     }
 
-    @Override
+    @Override @Transactional
     public void addRoleToUser(String username, String roleName) {
+        log.info("Adding role {} to user {}", username, roleName);
+        Optional<User> user = userRepository.findByUsername(username);
+        Optional<Role> role = roleRepository.findByName(roleName);
 
+        if (user.isEmpty() || role.isEmpty()) {
+            return;
+        }
+
+        user.get().getRoles().add(role.get());
     }
 
-    @Override
+    @Override @Transactional(readOnly = true)
     public User getUser(String username) {
-        return null;
+        log.info("Fetching user {}", username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found."));
     }
 
-    @Override
+    @Override @Transactional(readOnly = true)
     public List<User> getUsers() {
-        return null;
+        log.info("Fetching all users");
+        return userRepository.findAll();
     }
 }
