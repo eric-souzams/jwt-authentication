@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Data
@@ -33,7 +33,7 @@ public class User implements Serializable {
 
     private String password;
 
-    @ManyToMany(fetch = LAZY)
+    @ManyToMany(fetch = EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
 }
