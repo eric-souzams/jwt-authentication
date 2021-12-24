@@ -9,6 +9,7 @@ import io.security.userservicejwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +22,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
 
     @Override @Transactional
     public User saveUser(User user) {
         log.info("Saving new user {} to the database", user.getName());
+        user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
