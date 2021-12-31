@@ -21,7 +21,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     @Override
     @Transactional
     public void saveConfirmationToken(ConfirmationToken token) {
-        log.info("Save new token {} on database", token);
+        log.info("Save new token {} on database", token.getToken());
         repository.save(token);
     }
 

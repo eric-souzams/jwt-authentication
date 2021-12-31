@@ -16,4 +16,6 @@ public interface UserService {
 
     String generateConfirmationToken(User user);
 
+    User signInUser(String email, String password);
+
 }

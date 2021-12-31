@@ -1,6 +1,7 @@
 package io.security.FullRegistry.service.impl;
 
 import io.security.FullRegistry.dto.RoleRequest;
+import io.security.FullRegistry.exception.CustomAuthException;
 import io.security.FullRegistry.model.ConfirmationToken;
 import io.security.FullRegistry.model.Role;
 import io.security.FullRegistry.model.User;
@@ -62,6 +63,28 @@ public class UserServiceImpl implements UserService {
         log.info("Create new Token {} to user {}", token, user.getEmail());
 
         return token;
+    }
+
+    @Override
+    public User signInUser(String email, String password) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            log.error("User {} not found", email);
+            throw new CustomAuthException("User not found");
+        }
+
+        if (!user.get().getEnabled()) {
+            log.error("User {} not are enable", email);
+            throw new CustomAuthException("User not are enable");
+        }
+
+        boolean isMatcher = encoder.matches(password, user.get().getPassword());
+        if (!isMatcher) {
+            log.error("Email or password is not valid");
+            throw new CustomAuthException("Email or password is not valid");
+        }
+
+        return user.get();
     }
 
     @Override
