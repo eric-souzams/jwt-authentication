@@ -8,10 +8,12 @@ public interface UserService {
 
     User signUpUser(User user);
 
-    Integer enableAppUser(String email);
+    void enableAppUser(String email);
 
     Role saveRole(RoleRequest role);
 
     void addRoleToUser(String email, String roleName);
+
+    String generateConfirmationToken(User user);
 
 }

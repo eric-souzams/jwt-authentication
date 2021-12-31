@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "/api")
@@ -20,12 +22,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/role/new")
-    public ResponseEntity<Role> saveRole(@RequestBody RoleRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveRole(request));
+    public ResponseEntity<Role> saveRole(@RequestBody @Valid RoleRequest request) {
+        Role role = userService.saveRole(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(role);
     }
 
     @PostMapping(value = "/role/add-to-user")
-    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserRequest request) {
+    public ResponseEntity<?> addRoleToUser(@RequestBody @Valid RoleToUserRequest request) {
         userService.addRoleToUser(request.getEmail(), request.getRoleName());
         return ResponseEntity.ok().build();
     }

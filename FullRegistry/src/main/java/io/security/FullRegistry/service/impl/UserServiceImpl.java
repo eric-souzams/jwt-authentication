@@ -1,10 +1,12 @@
 package io.security.FullRegistry.service.impl;
 
 import io.security.FullRegistry.dto.RoleRequest;
+import io.security.FullRegistry.model.ConfirmationToken;
 import io.security.FullRegistry.model.Role;
 import io.security.FullRegistry.model.User;
 import io.security.FullRegistry.repository.RoleRepository;
 import io.security.FullRegistry.repository.UserRepository;
+import io.security.FullRegistry.service.ConfirmationTokenService;
 import io.security.FullRegistry.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -22,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder encoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Override
     @Transactional
@@ -43,16 +48,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Integer enableAppUser(String email) {
-        return null;
+    public String generateConfirmationToken(User user) {
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user);
+
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        log.info("Create new Token {} to user {}", token, user.getEmail());
+
+        return token;
+    }
+
+    @Override
+    @Transactional
+    public void enableAppUser(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            log.error("User with email {} not found", email);
+            throw new IllegalStateException("User not found");
+        }
+
+        log.info("User {} now are enable", email);
+        user.get().setEnabled(true);
     }
 
     @Override
     @Transactional
     public Role saveRole(RoleRequest role) {
-        Role newRole = new Role(null, role.getRoleName());
         log.info("Saving new role {} to the database", role.getRoleName());
-        return roleRepository.save(newRole);
+        return roleRepository.save(new Role(null, role.getRoleName()));
     }
 
     @Override

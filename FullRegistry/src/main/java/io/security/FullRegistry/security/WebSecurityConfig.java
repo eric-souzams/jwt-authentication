@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -40,9 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/auth/register").permitAll();
-        http.authorizeRequests().antMatchers(POST, "/api/role/add-to-user/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers(POST, "/api/role/new/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/api/auth/register").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/api/auth/confirm").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/api/role/add-to-user").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/api/role/new").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.formLogin();
     }

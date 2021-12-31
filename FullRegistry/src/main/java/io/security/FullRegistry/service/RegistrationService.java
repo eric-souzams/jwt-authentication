@@ -6,4 +6,6 @@ public interface RegistrationService {
 
     void register(RegistrationUserRequest request);
 
+    void confirmToken(String token);
+
 }

@@ -24,6 +24,7 @@ public class RegistrationController {
 
     @GetMapping(value = "/confirm")
     public ResponseEntity<Void> confirm(@RequestParam("token") String token) {
+        registrationService.confirmToken(token);
         return ResponseEntity.ok().build();
     }
 
