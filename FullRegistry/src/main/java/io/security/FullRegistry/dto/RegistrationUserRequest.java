@@ -1,4 +1,4 @@
-package io.security.FullRegistry.Registration;
+package io.security.FullRegistry.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

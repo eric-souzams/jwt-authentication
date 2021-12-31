@@ -1,5 +1,6 @@
-package io.security.FullRegistry.User;
+package io.security.FullRegistry.model;
 
+import io.security.FullRegistry.model.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,6 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
 
-    private String username;
-
     private String email;
 
     private String password;
@@ -35,16 +34,14 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
-    private Boolean enabled;
-    private Boolean locked;
+    private Boolean enabled = false;
+    private Boolean locked = false;
 
-    public User(String firstName, String lastName, String username, String email, String password, Collection<Role> roles) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = roles;
     }
 
     @Override
@@ -52,6 +49,11 @@ public class User implements UserDetails {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override

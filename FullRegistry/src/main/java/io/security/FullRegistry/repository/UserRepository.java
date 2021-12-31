@@ -1,5 +1,6 @@
-package io.security.FullRegistry.User;
+package io.security.FullRegistry.repository;
 
+import io.security.FullRegistry.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 

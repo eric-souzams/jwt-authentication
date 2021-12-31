@@ -1,4 +1,4 @@
-package io.security.FullRegistry.User;
+package io.security.FullRegistry.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
