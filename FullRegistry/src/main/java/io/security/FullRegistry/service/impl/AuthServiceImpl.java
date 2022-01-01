@@ -4,7 +4,7 @@ import io.security.FullRegistry.dto.RegistrationUserRequest;
 import io.security.FullRegistry.model.ConfirmationToken;
 import io.security.FullRegistry.model.User;
 import io.security.FullRegistry.service.ConfirmationTokenService;
-import io.security.FullRegistry.service.RegistrationService;
+import io.security.FullRegistry.service.AuthService;
 import io.security.FullRegistry.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class RegistrationServiceImpl implements RegistrationService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenService;
@@ -35,12 +35,14 @@ public class RegistrationServiceImpl implements RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService.getToken(token);
 
         if (confirmationToken.getConfirmedAt() != null) {
+            log.error("User {} already confirmed and enabled account", confirmationToken.getUser().getEmail());
             throw new IllegalStateException("Email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
+            log.error("Token {} expired", confirmationToken.getToken());
             throw new IllegalStateException("Token expired");
         }
 

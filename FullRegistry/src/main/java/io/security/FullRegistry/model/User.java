@@ -1,6 +1,5 @@
 package io.security.FullRegistry.model;
 
-import io.security.FullRegistry.model.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,10 @@ import java.util.Collection;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @EqualsAndHashCode
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class User implements UserDetails {
 
     @Id

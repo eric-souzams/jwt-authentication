@@ -18,4 +18,6 @@ public interface UserService {
 
     User signInUser(String email, String password);
 
+    User getAuthenticatedUser(String email);
+
 }

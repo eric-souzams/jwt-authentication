@@ -1,8 +1,12 @@
 package io.security.FullRegistry.service.impl;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.security.FullRegistry.model.User;
 import io.security.FullRegistry.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class JwtServiceImpl implements JwtService {
 
@@ -35,6 +40,7 @@ public class JwtServiceImpl implements JwtService {
         Instant issuedInstant = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant();
         Date issuedDate = Date.from(instant);
 
+        log.info("Generate a access token to {}", user.getEmail());
         return Jwts.builder()
                 .setExpiration(expirationDate)
                 .setIssuedAt(issuedDate)
@@ -56,6 +62,7 @@ public class JwtServiceImpl implements JwtService {
         Instant issuedInstant = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant();
         Date issuedDate = Date.from(instant);
 
+        log.info("Generate a refresh token to {}", user.getEmail());
         return Jwts.builder()
                 .setExpiration(expirationDate)
                 .setIssuedAt(issuedDate)
