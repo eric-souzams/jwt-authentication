@@ -22,10 +22,10 @@ This project was developed using the following technologies:
 You'll need [Java 11+](https://www.oracle.com/br/java/technologies/javase-jdk11-downloads.html) and [Maven](https://maven.apache.org/download.cgi) installed on your computer in order to build this app.
 
 ```bash
-$ git clone https://github.com/eric-souzams/jwt-authentication.git
+$ git clone https://github.com/eric-souzams/spring-security-implementations.git
 $ cd jwt-authentication
 
-$ cd {version}
+$ cd {versionName}
 
 $ mvn spring-boot:run
 ```
