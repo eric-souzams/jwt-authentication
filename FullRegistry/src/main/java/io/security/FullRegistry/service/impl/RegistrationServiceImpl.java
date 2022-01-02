@@ -4,8 +4,10 @@ import io.security.FullRegistry.dto.RegistrationUserRequest;
 import io.security.FullRegistry.model.ConfirmationToken;
 import io.security.FullRegistry.model.User;
 import io.security.FullRegistry.service.ConfirmationTokenService;
-import io.security.FullRegistry.service.AuthService;
+import io.security.FullRegistry.service.EmailSenderService;
+import io.security.FullRegistry.service.RegistrationService;
 import io.security.FullRegistry.service.UserService;
+import io.security.FullRegistry.utils.BuildEmails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,11 @@ import java.time.LocalDateTime;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenService;
+    private final EmailSenderService emailSenderService;
 
     @Override
     @Transactional
@@ -27,6 +30,12 @@ public class AuthServiceImpl implements AuthService {
         User user = userService.signUpUser(new User(request.getFirstName(), request.getLastName(), request.getEmail(), request.getPassword()));
 
         String token = userService.generateConfirmationToken(user);
+
+        String confirmLink = "http://http://localhost:8080/api/auth/confirm?token=" + token;
+        emailSenderService.send(
+                user.getEmail(),
+                BuildEmails.activeAccount(user.getFirstName(), confirmLink),
+                "Active your account");
     }
 
     @Override

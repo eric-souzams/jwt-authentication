@@ -7,7 +7,7 @@ import io.security.FullRegistry.dto.TokenResponse;
 import io.security.FullRegistry.exception.CustomAuthException;
 import io.security.FullRegistry.model.User;
 import io.security.FullRegistry.service.JwtService;
-import io.security.FullRegistry.service.AuthService;
+import io.security.FullRegistry.service.RegistrationService;
 import io.security.FullRegistry.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequestMapping(value = "/api/auth")
 public class AuthController {
 
-    private final AuthService registrationService;
+    private final RegistrationService registrationService;
     private final UserService userService;
     private final JwtService jwtService;
 
