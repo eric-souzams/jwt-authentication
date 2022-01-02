@@ -2,11 +2,12 @@
 
 ## Demos Version
 
-| Version | Name                                                                                                  |
-|---------|-------------------------------------------------------------------------------------------------------|
-| V1      | [jwt-authentication](https://github.com/eric-souzams/jwt-authentication/tree/main/jwt-authentication) |
-| V2      | [userservicejwt](https://github.com/eric-souzams/jwt-authentication/tree/main/userservicejwt)         |
-| V3      | [FullRegistry](https://github.com/eric-souzams/jwt-authentication/tree/main/FullRegistry)             |
+| Version | Name                                                                                                  | Observations |
+|---------|-------------------------------------------------------------------------------------------------------|--------------|
+| V1      | [jwt-authentication](https://github.com/eric-souzams/jwt-authentication/tree/main/jwt-authentication) |              |
+| V2      | [userservicejwt](https://github.com/eric-souzams/jwt-authentication/tree/main/userservicejwt)         |              |
+| V3      | [FullRegistry](https://github.com/eric-souzams/jwt-authentication/tree/main/FullRegistry)             |              |
+| V4      | [FullRegistryEvent](https://github.com/eric-souzams/jwt-authentication/tree/main/FullRegistryEvent)   |              |
 
 
 ## Technologies
@@ -23,7 +24,7 @@ You'll need [Java 11+](https://www.oracle.com/br/java/technologies/javase-jdk11-
 
 ```bash
 $ git clone https://github.com/eric-souzams/spring-security-implementations.git
-$ cd jwt-authentication
+$ cd spring-security-implementations
 
 $ cd {versionName}
 
