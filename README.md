@@ -7,7 +7,7 @@
 | V1      | [jwt-authentication](https://github.com/eric-souzams/jwt-authentication/tree/main/jwt-authentication) |              |
 | V2      | [userservicejwt](https://github.com/eric-souzams/jwt-authentication/tree/main/userservicejwt)         |              |
 | V3      | [FullRegistry](https://github.com/eric-souzams/jwt-authentication/tree/main/FullRegistry)             |              |
-| V4      | [FullRegistryEvent](https://github.com/eric-souzams/jwt-authentication/tree/main/FullRegistryEvent)   |              |
+| V4      | [FullRegistryEvent](https://github.com/eric-souzams/jwt-authentication/tree/main/FullRegistryEvent)   | Coming soon  |
 
 
 ## Technologies
