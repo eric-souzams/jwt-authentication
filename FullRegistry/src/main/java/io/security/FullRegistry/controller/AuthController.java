@@ -1,10 +1,9 @@
 package io.security.FullRegistry.controller;
 
 import io.jsonwebtoken.Claims;
-import io.security.FullRegistry.dto.LoginRequest;
-import io.security.FullRegistry.dto.RegistrationUserRequest;
-import io.security.FullRegistry.dto.TokenResponse;
+import io.security.FullRegistry.dto.*;
 import io.security.FullRegistry.exception.CustomAuthException;
+import io.security.FullRegistry.exception.CustomBusinessException;
 import io.security.FullRegistry.model.User;
 import io.security.FullRegistry.service.JwtService;
 import io.security.FullRegistry.service.RegistrationService;
@@ -29,9 +28,13 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping(value = "/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid RegistrationUserRequest request) {
-        registrationService.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<?> register(@RequestBody @Valid RegistrationUserRequest request) {
+        try {
+            registrationService.register(request);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (CustomBusinessException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
     }
 
     @GetMapping(value = "/confirm")
@@ -39,7 +42,7 @@ public class AuthController {
         try {
             registrationService.confirmToken(token);
             return ResponseEntity.ok().build();
-        } catch (Exception exception) {
+        } catch (CustomBusinessException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
@@ -90,6 +93,27 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid refresh token");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid refresh token");
+    }
+
+    @PostMapping(value = "/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody @Valid ForgotPasswordRequest request) {
+        try {
+            userService.forgotPassword(request);
+            return ResponseEntity.ok().build();
+        } catch (CustomBusinessException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+    }
+
+    @PutMapping(value = "/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam("token") String token,
+                                           @RequestBody @Valid ResetPasswordRequest request) {
+        try {
+            userService.resetPassword(request, token);
+            return ResponseEntity.ok().build();
+        } catch (CustomBusinessException | CustomAuthException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
     }
 
 }

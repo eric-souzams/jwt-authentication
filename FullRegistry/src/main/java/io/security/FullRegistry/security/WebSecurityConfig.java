@@ -15,8 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -55,9 +54,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(POST, "/api/auth/register").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/auth/confirm").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/auth/token/refresh").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/api/auth/forgot-password").permitAll();
+        http.authorizeRequests().antMatchers(PUT, "/api/auth/reset-password").permitAll();
 
-        http.authorizeRequests().antMatchers(POST, "/api/role/add-to-user").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(POST, "/api/role/new").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/api/role/add-to-user").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(POST, "/api/role/new").hasAnyAuthority("ROLE_ADMIN");
 
         http.authorizeRequests().anyRequest().authenticated();
 
